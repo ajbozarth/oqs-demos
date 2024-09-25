@@ -220,11 +220,13 @@ jobs:
             # all of them might exhaust memory
             docker build --build-arg MAKE_DEFINES="-j 18" -t oqs-curl . &&
             docker build --build-arg MAKE_DEFINES="-j 18" --target dev -t oqs-curl-dev . 
+            docker build --build-arg MAKE_DEFINES="-j 18" --build-arg OPENSSL_TAG=master --build-arg LIBOQS_TAG=main --build-arg OQSPROVIDER_TAG=main -t oqs-curl-latest . &&
           working_directory: curl
       - run:
           name: Test Curl (dev)
           command: |
             docker run -e TEST_TIME=5 -e KEM_ALG=kyber768 -e SIG_ALG=dilithium3 -it oqs-curl perftest.sh 
+            docker run -e TEST_TIME=5 -e KEM_ALG=kyber768 -e SIG_ALG=dilithium3 -it oqs-curl-latest perftest.sh
       - run:
           name: Test httpd using curl (dev)
           command: |
