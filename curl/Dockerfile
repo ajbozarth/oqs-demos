@@ -1,5 +1,8 @@
 # Multi-stage build: First the full builder image:
 
+# define the alpine image version to use
+ARG ALPINE_VERSION=3.20
+
 # define the openssl tag to be used
 ARG OPENSSL_TAG=openssl-3.3.2
 
@@ -28,7 +31,7 @@ ARG DEFAULT_GROUPS="x25519:x448:kyber512:p256_kyber512:kyber768:p384_kyber768:ky
 ARG MAKE_DEFINES="-j 4"
 
 
-FROM alpine:3.20 as intermediate
+FROM alpine:${ALPINE_VERSION} as intermediate
 # Take in all global args
 ARG OPENSSL_TAG
 ARG LIBOQS_TAG
@@ -119,7 +122,7 @@ COPY serverstart.sh ${INSTALLDIR}/bin
 CMD ["serverstart.sh"]
 
 ## second stage: Only create minimal image without build tooling and intermediate build results generated above:
-FROM alpine:3.20 as dev
+FROM alpine:${ALPINE_VERSION} as dev
 # Take in all global args
 ARG INSTALLDIR
 ARG SIG_ALG
