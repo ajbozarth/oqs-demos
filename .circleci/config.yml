@@ -35,13 +35,19 @@ jobs:
       - run:
           name: Build Provider
           command: |
-            docker build --build-arg MAKE_DEFINES="-j 18" -t oqs-ossl3-img . 
+            docker build --build-arg MAKE_DEFINES="-j 18" -t oqs-ossl3-img . &&
+            docker build --build-arg MAKE_DEFINES="-j 18" --build-arg OPENSSL_TAG=master --build-arg LIBOQS_TAG=main --build-arg OQSPROVIDER_TAG=main -t oqs-ossl3-img-main .
           working_directory: openssl3
       - run:
           name: Spot-test Provider -- One baseline and one hybrid QSC alg
           command: |
             docker run --rm --name oqs-ossl3 oqs-ossl3-img sh -c "openssl list -providers; /opt/openssl32/bin/serverstart.sh; sleep 2; echo 'GET /' | openssl s_client -connect localhost --groups kyber768 --CAfile /opt/openssl32/bin/CA.crt" &&
             docker run --rm --name oqs-ossl3 oqs-ossl3-img sh -c "KEM_ALG=p521_frodo1344aes /opt/openssl32/bin/serverstart.sh; sleep 2; echo 'GET /' | openssl s_client -connect localhost --groups p521_frodo1344aes --CAfile /opt/openssl32/bin/CA.crt"
+      - run:
+          name: Spot-test Provider -- One baseline and one hybrid QSC alg (main/master)
+          command: |
+            docker run --rm --name oqs-ossl3-main oqs-ossl3-img-main sh -c "openssl list -providers; /opt/openssl32/bin/serverstart.sh; sleep 2; echo 'GET /' | openssl s_client -connect localhost --groups kyber768 --CAfile /opt/openssl32/bin/CA.crt" &&
+            docker run --rm --name oqs-ossl3-main oqs-ossl3-img-main sh -c "KEM_ALG=p521_frodo1344aes /opt/openssl32/bin/serverstart.sh; sleep 2; echo 'GET /' | openssl s_client -connect localhost --groups p521_frodo1344aes --CAfile /opt/openssl32/bin/CA.crt"
       - when:
           condition:
             or:

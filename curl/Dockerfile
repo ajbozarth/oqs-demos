@@ -10,7 +10,7 @@ ARG OPENSSL_TAG=openssl-3.3.2
 ARG LIBOQS_TAG=0.11.0
 
 # define the oqsprovider tag to be used
-ARG OQSPROVIDER_TAG=0.6.1
+ARG OQSPROVIDER_TAG=0.7.0
 
 # define the Curl version to be baked in
 ARG CURL_VERSION=8.10.0
