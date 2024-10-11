@@ -6,7 +6,7 @@
 ARG ALPINE_VERSION=3.20
 
 # define the openssl tag to be used
-ARG OPENSSL_TAG=openssl-3.3.2
+ARG OPENSSL_TAG=openssl-3.4.0-beta1
 
 # define the liboqs tag to be used
 ARG LIBOQS_TAG=0.11.0
