@@ -3,10 +3,10 @@
 # First: global build arguments: 
 
 # define the alpine image version to use
-ARG ALPINE_VERSION=3.20
+ARG ALPINE_VERSION=3.13
 
 # define the openssl tag to be used
-ARG OPENSSL_TAG=openssl-3.4.0-beta1
+ARG OPENSSL_TAG=openssl-3.3.2
 
 # define the liboqs tag to be used
 ARG LIBOQS_TAG=0.11.0
@@ -146,6 +146,8 @@ COPY --from=intermediate /usr/local/apr/lib  /usr/local/apr/lib
 # Need to copy over OpenSSL3 libs and conf for oqsprovider use
 COPY --from=intermediate ${OPENSSL_PATH}/ssl ${OPENSSL_PATH}/ssl
 COPY --from=intermediate ${OPENSSL_PATH}/lib64 ${OPENSSL_PATH}/lib64
+
+RUN ln -s ${OPENSSL_PATH}/lib64 ${OPENSSL_PATH}/lib;
 
 COPY httpd-conf/httpd-ssl.conf ${HTTPD_PATH}/httpd-conf/httpd-ssl.conf
 COPY httpd-conf/httpd.conf ${HTTPD_PATH}/httpd-conf/httpd.conf
