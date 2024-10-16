@@ -230,7 +230,8 @@ jobs:
       - run:
           name: Build Apache httpd
           command: |
-            docker build --build-arg MAKE_DEFINES="-j 18" -t oqs-httpd-img . 
+            docker build --build-arg MAKE_DEFINES="-j 18" -t oqs-httpd-img . &&
+            docker build --build-arg MAKE_DEFINES="-j 18" --build-arg OPENSSL_TAG=master --build-arg LIBOQS_TAG=main --build-arg OQSPROVIDER_TAG=main -t oqs-httpd-img-main .
           working_directory: httpd
       - run:
           name: Build Curl (dev)
@@ -244,7 +245,10 @@ jobs:
       - run:
           name: Test Curl (dev)
           command: |
-            docker run -e TEST_TIME=5 -e KEM_ALG=kyber768 -e SIG_ALG=dilithium3 -it oqs-curl perftest.sh &&
+            docker run -e TEST_TIME=5 -e KEM_ALG=kyber768 -e SIG_ALG=dilithium3 -it oqs-curl perftest.sh
+      - run:
+          name: Test Curl (dev) (main/master)
+          command: |
             docker run -e TEST_TIME=5 -e KEM_ALG=kyber768 -e SIG_ALG=dilithium3 -it oqs-curl-main perftest.sh
       - run:
           name: Test httpd using curl (dev)
@@ -253,6 +257,13 @@ jobs:
             docker run --network httpd-test --detach --rm --name oqs-httpd oqs-httpd-img &&
             sleep 2 &&
             docker run --network httpd-test oqs-curl curl -k https://oqs-httpd:4433 --curves kyber768
+      - run:
+          name: Test httpd using curl (dev) (main/master)
+          command: |
+            docker network create httpd-test-main &&
+            docker run --network httpd-test-main --detach --rm --name oqs-httpd-main oqs-httpd-img-main &&
+            sleep 2 &&
+            docker run --network httpd-test-main oqs-curl-main curl -k https://oqs-httpd:4433 --curves kyber768
       - when:
           condition:
             or:
