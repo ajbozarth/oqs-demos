@@ -44,7 +44,7 @@ The first command adds user `<user>` (yourself) to the group `docker`, and the s
 ## General information
 
 The Dockerfile 
-- obtains all source code required for building the quantum safe cryptography (QSC) algorithms and the [QSC-enabled version of OpenSSH (7.9-2020-08_p1)](https://github.com/open-quantum-safe/openssh/releases/tag/OQS-OpenSSH-snapshot-2020-08)
+- obtains all source code required for building the quantum safe cryptography (QSC) algorithms and the [QSC-enabled version of OpenSSH (9.7)](https://github.com/open-quantum-safe/openssh/releases/tag/OQS-OpenSSH-snapshot-2024-08)
 - builds all libraries and applications
 - creates a second user `oqs` with the default password `Pa55W0rd`
 - by default starts the openssh daemon\*
@@ -57,7 +57,7 @@ The Dockerfile
 
 ## Updating the liboqs version
 
-Currently the used version of liboqs is [0.4.0](https://github.com/open-quantum-safe/liboqs/releases/tag/0.4.0). Be aware that upon changing this version, which can be done in the [Dockerfile](Dockerfile), the default algorithms may change. If this is the case [sshd_config](sshd_config)/[sshd_config](sshd_config) must be updated accordingly.
+Currently the used version of liboqs is [0.11.0](https://github.com/open-quantum-safe/liboqs/releases/tag/0.11.0). Be aware that upon changing this version, which can be done in the [Dockerfile](Dockerfile), the default algorithms may change. If this is the case [sshd_config](sshd_config)/[sshd_config](sshd_config) must be updated accordingly.
 
 # Usage
 
@@ -79,7 +79,7 @@ By default this is `/opt/oqs-ssh`. When it is changed, every occurrence of this 
 
 ## LIBOQS_BUILD_DEFINES
 
-This permits changing the build options for the underlying library with the quantum safe algorithms. All possible options are documented [here](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs).
+This permits changing the build options for the underlying library with the quantum safe algorithms. All possible options are documented [here](https://github.com/open-quantum-safe/liboqs/blob/main/CONFIGURE.md).
 
 By default, the image is built such as to have maximum portability regardless of CPU type and optimizations available, i.e. to run on the widest possible range of cloud machines.
 

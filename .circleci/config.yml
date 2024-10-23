@@ -478,7 +478,6 @@ jobs:
                   docker push $TARGETNAME/ngtcp2-server:latest &&
                   docker push $TARGETNAME/ngtcp2-client:latest
 
-# Not actively maintained:
   ubuntu_x64_openssh:
     description: A template for building and pushing OQS demo Docker images on
       Ubuntu that do not use OQS-OpenSSL, but rather liboqs in another form
@@ -500,6 +499,12 @@ jobs:
           command: |
             docker build --build-arg MAKE_DEFINES="-j 18" -t oqs-openssh-img . &&
             docker run --rm --name oqs-openssh oqs-openssh-img connect-test.sh
+          working_directory: openssh
+      - run:
+          name: Test OpenSSH (main/master)
+          command: |
+            docker build --build-arg LIBOQS_RELEASE=main --build-arg MAKE_DEFINES="-j 18" -t oqs-openssh-img-main . &&
+            docker run --rm --name oqs-openssh-main oqs-openssh-img-main connect-test.sh
           working_directory: openssh
       - when:
           condition:
@@ -624,8 +629,8 @@ workflows:
       #    context: openquantumsafe
       #- ubuntu_x64_ngtcp2:
       #    context: openquantumsafe
-      #- ubuntu_x64_openssh:
-      #    context: openquantumsafe
+      - ubuntu_x64_openssh:
+         context: openquantumsafe
       # Disabled in CI as failing to conclude test properly as per
       # https://github.com/open-quantum-safe/oqs-demos/pull/167#issuecomment-1383673300
       # - ubuntu_x64_openlitespeed:
