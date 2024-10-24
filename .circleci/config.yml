@@ -431,7 +431,6 @@ jobs:
                 command: |
                   docker push $TARGETNAME/wireshark
 
-# Not actively maintained:
   ubuntu_x64_ngtcp2:
     description: Building OQS-based ngtcp2 docker image
     docker:
@@ -453,6 +452,12 @@ jobs:
             docker build -t oqs-ngtcp2-client -f Dockerfile-client . 
           working_directory: ngtcp2
       - run:
+          name: Build ngtcp2 server and client (main/master)
+          command: |
+            docker build --build-arg LIBOQS_TAG=main --build-arg OQSPROVIDER_TAG=main --build-arg NGHTTP3_TAG=main --build-arg NGTCP2_TAG=main -t oqs-ngtcp2-server-main -f Dockerfile-server . &&
+            docker build --build-arg LIBOQS_TAG=main --build-arg OQSPROVIDER_TAG=main --build-arg NGHTTP3_TAG=main --build-arg NGTCP2_TAG=main -t oqs-ngtcp2-client-main -f Dockerfile-client . 
+          working_directory: ngtcp2
+      - run:
           name: Test ngtcp2 using local docker network
           command: |
             docker network create ngtcp2-test
@@ -463,6 +468,18 @@ jobs:
             docker stop oqs-ngtcp2server
             docker rm oqs-ngtcp2server
             docker network rm ngtcp2-test
+          working_directory: ngtcp2
+      - run:
+          name: Test ngtcp2 using local docker network (main/master)
+          command: |
+            docker network create ngtcp2-test-main
+            docker run --network ngtcp2-test-main --name oqs-ngtcp2server-main oqs-ngtcp2-server-main &
+            docker run --network ngtcp2-test-main -it --name oqs-ngtcp2client-main oqs-ngtcp2-client-main sh -c 'qtlsclient --exit-on-first-stream-close --groups kyber512 oqs-ngtcp2server-main 6000'
+            docker logs oqs-ngtcp2client | grep "QUIC handshake has been confirmed"
+            docker rm oqs-ngtcp2client-main
+            docker stop oqs-ngtcp2server-main
+            docker rm oqs-ngtcp2server-main
+            docker network rm ngtcp2-test-main
           working_directory: ngtcp2
       - when:
           condition:
@@ -637,8 +654,8 @@ workflows:
       #    context: openquantumsafe
       #- ubuntu_x64_mosquitto:
       #    context: openquantumsafe
-      #- ubuntu_x64_ngtcp2:
-      #    context: openquantumsafe
+      - ubuntu_x64_ngtcp2:
+         context: openquantumsafe
       - ubuntu_x64_openssh:
          context: openquantumsafe
       # Disabled in CI as failing to conclude test properly as per
