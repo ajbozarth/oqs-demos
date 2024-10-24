@@ -571,7 +571,6 @@ jobs:
                   docker tag envoy-oqs $TARGETNAME/envoy:latest &&
                   docker push $TARGETNAME/envoy:latest 
 
-# Not actively maintained:
   ubuntu_x64_h2load:
     description: Building and pushing OQS-h2load demo Docker images
     docker:
@@ -592,11 +591,22 @@ jobs:
             docker build -t oqs-h2load .
           working_directory: h2load
       - run:
-          name: Test oqs-h2load using public oqs-nginx and oqs-nginx-quic
+          name: Build h2load with liboqs (main/master)
+          command: |
+            docker build --build-arg OPENSSL_TAG=master --build-arg LIBOQS_TAG=main --build-arg OQSPROVIDER_TAG=main --build-arg NGHTTP2_TAG=master -t oqs-h2load-main .
+          working_directory: h2load
+      - run:
+          name: Test oqs-h2load using public oqs-nginx
           command: |
             docker network create h2load-test &&
             docker run --network h2load-test --detach --rm --name oqs-nginx openquantumsafe/nginx &&
             docker run --network h2load-test oqs-h2load sh -c "h2load -n 100 -c 10 https://oqs-nginx:4433 --groups kyber512"
+      - run:
+          name: Test oqs-h2load using public oqs-nginx (main/master)
+          command: |
+            docker network create h2load-test-main &&
+            docker run --network h2load-test-main --detach --rm --name oqs-nginx-main openquantumsafe/nginx &&
+            docker run --network h2load-test-main oqs-h2load-main sh -c "h2load -n 100 -c 10 https://oqs-nginx-main:4433 --groups kyber512"
       - when:
           condition:
             or:
@@ -640,5 +650,5 @@ workflows:
       # Disable as it takes too long on OQS CCI plan
       #- ubuntu_x64_envoy:
       #    context: openquantumsafe
-      #- ubuntu_x64_h2load:
-      #    context: openquantumsafe
+      - ubuntu_x64_h2load:
+         context: openquantumsafe
