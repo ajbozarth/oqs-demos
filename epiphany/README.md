@@ -5,7 +5,7 @@ This demo is based on work done by [Igor Barshteyn](https://www.linkedin.com/pul
 ## Quick start
 
 1) Be sure to have [docker installed](https://docs.docker.com/install).
-2) Run `docker build -t openquantumsafe/epiphany .` to create a QSC-enabled epiphany docker image.
+2) Run `docker build -t oqs-epiphany .` to create a QSC-enabled epiphany docker image.
 
 ## Usage
 
