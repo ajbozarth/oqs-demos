@@ -27,15 +27,15 @@ Documentation for using the server docker image is contained in the separate [US
 
 ## Client
 
-The QUIC client from https://github.com/open-quantum-safe/oqs-demos/tree/main/quic can be used to test the post quantum key exchange.
+The [curl QUIC demo](https://github.com/open-quantum-safe/oqs-demos/blob/main/curl/README-QUIC.md) can be used to test the post quantum key exchange.
 
 The following command
 
 ```
-docker run --network lsws-test --name client -it openquantumsafe/msquic-reach bash
+docker run --network lsws-test --name curl-quic-instance -it openquantumsafe/curl-quic bash
 ```
 
-runs the container for the QSC-enabled QUIC client on the same network as the server.
+runs the container with a QSC-enabled QUIC curl on the same network as the server.
 ### Usage
 Documentation for using the client docker image is contained in the separate [USAGE-client.md](USAGE-client.md) file.
 

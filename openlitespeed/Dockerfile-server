@@ -1,7 +1,16 @@
-ARG LIBOQS_TAG=main
+# define the boringssl tag to be used
+ARG BORINGSSL_TAG=OQS-BoringSSL-snapshot-2024-10
 
-FROM ubuntu:focal as builder
+# define the liboqs tag to be used
+ARG LIBOQS_TAG=0.11.0
 
+# define the openlitespeed tag to be used
+ARG OPENLITESPEED_TAG=v1.8.2
+
+FROM ubuntu:focal AS builder
+
+ARG OPENLITESPEED_TAG
+ARG BORINGSSL_TAG
 ARG LIBOQS_TAG
 
 ENV TZ=Europe/Zurich
@@ -16,7 +25,7 @@ RUN apt install git libz-dev libevent-dev cmake gcc ninja-build libunwind-dev pk
 WORKDIR /opt
 
 # Download openlitespeed repository
-RUN git clone https://github.com/litespeedtech/openlitespeed.git 
+RUN git clone --depth 1 --branch ${OPENLITESPEED_TAG} https://github.com/litespeedtech/openlitespeed.git
 
 COPY build.sh.patch /opt/
 COPY build_bssl.sh.patch /opt/
@@ -24,8 +33,9 @@ COPY build_bssl.sh.patch /opt/
 # Apply patch to build.sh
 RUN cd openlitespeed && git apply --reject --whitespace=fix /opt/build.sh.patch 
 
-
+ENV BORINGSSL_TAG=${BORINGSSL_TAG}
 ENV LIBOQS_TAG=${LIBOQS_TAG}
+
 # Build and install openlitespeed
 RUN cd openlitespeed && ./build.sh &&  ./install.sh
 
