@@ -1,3 +1,8 @@
+# DEPRECATED
+
+> [!Warning]
+> This integration is longer supported due to lack of interest and support, if you're interested in revitalizing this demo please submit a PR. A previous update attempt can be found [here](https://github.com/ajbozarth/oqs-demos/commit/24f81fbb05989249ad27d459e336cc90dac7a2c9)
+
 OpenLiteSpeed
 ===============
 [OpenLiteSpeed](https://github.com/litespeedtech/openlitespeed) is the Open Source edition of [LiteSpeed Web Server Enterprise](https://www.litespeedtech.com/). 
