@@ -67,9 +67,9 @@ Detailed information on how to use the image is available in [the separate file 
 
 The Dockerfile provided allows for some customization of the image built. Those build arguments can be used at buildtime via the flag `--build-arg`, e.g. `docker build --build-arg INSTALL_DIR="/some/directory/" -t name-of-image .`.
 
-## LIBOQS_RELEASE
+## LIBOQS_TAG
 
-Tag of `liboqs` release to be used. Default "main".
+Tag of `liboqs` release to be used.
 
 ## INSTALL_DIR
 

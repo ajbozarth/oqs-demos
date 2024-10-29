@@ -69,6 +69,6 @@ In order to change the signature algorithm used for performing the TLS authentic
 
 ## Disclaimer
 
-[THIS IS NOT FIT FOR PRODUCTION USE](https://github.com/open-quantum-safe/openssl#limitations-and-security).
+[THIS IS NOT FIT FOR PRODUCTION USE](https://github.com/open-quantum-safe/liboqs#limitations-and-security).
 
 Most notably, the CA key is not protected by a password and thus accessible to anyone with access to the docker volume.

@@ -8,7 +8,7 @@ FROM alpine:${ALPINE_VERSION} as intermediate
 ENV DEBIAN_FRONTEND=noninteractive
 
 # define the quictls openssl tag to be used
-ARG OPENSSL_TAG=openssl-3.1.7-quic1
+ARG OPENSSLQUIC_TAG=openssl-3.1.7-quic1
 
 # define the liboqs tag to be used
 ARG LIBOQS_TAG=0.11.0
@@ -35,7 +35,7 @@ WORKDIR /opt
 
 # get all sources
 RUN git clone --depth 1 --branch ${LIBOQS_TAG} https://github.com/open-quantum-safe/liboqs && \
-    git clone --depth 1 --branch ${OPENSSL_TAG} https://github.com/quictls/openssl.git && \
+    git clone --depth 1 --branch ${OPENSSLQUIC_TAG} https://github.com/quictls/openssl.git && \
     git clone --depth 1 --branch ${OQSPROVIDER_TAG} https://github.com/open-quantum-safe/oqs-provider.git && \
     git clone --depth 1 --branch ${NGHTTP3_TAG}  https://github.com/ngtcp2/nghttp3 && \
     git clone --depth 1 --branch ${NGTCP2_TAG} https://github.com/ngtcp2/ngtcp2

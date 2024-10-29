@@ -9,7 +9,7 @@ ARG INSTALL_DIR=${DEFAULT_INSTALL_DIR}
 
 # liboqs version
 # ATTENTION: Changing this could mean that further adaptions in sshd_config and ssh_config are required
-ARG LIBOQS_RELEASE="0.11.0"
+ARG LIBOQS_TAG="0.11.0"
 
 # liboqs build defines (https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs)
 ARG LIBOQS_BUILD_DEFINES=
@@ -31,7 +31,7 @@ ARG OQS_PASSWORD="Pa55W0rd"
 FROM alpine:${ALPINE_VERSION} as intermediate
 # Take in all global args
 ARG INSTALL_DIR
-ARG LIBOQS_RELEASE
+ARG LIBOQS_TAG
 ARG LIBOQS_BUILD_DEFINES
 ARG OQS_OPENSSH_RELEASE
 ARG OPENSSH_BUILD_OPTIONS
@@ -56,7 +56,7 @@ RUN apk add gcc musl-dev linux-headers \
 
 # get all sources
 WORKDIR /opt
-RUN git clone --depth 1 --branch ${LIBOQS_RELEASE} https://github.com/open-quantum-safe/liboqs && \
+RUN git clone --depth 1 --branch ${LIBOQS_TAG} https://github.com/open-quantum-safe/liboqs && \
     git clone --depth 1 --branch ${OQS_OPENSSH_RELEASE} https://github.com/open-quantum-safe/openssh ossh-src;
 
 # build liboqs static (does not work with shared lib!)
