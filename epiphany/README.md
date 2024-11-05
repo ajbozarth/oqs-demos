@@ -1,7 +1,7 @@
 # DEPRECATED
 
 > [!Warning]
-> This integration is longer supported due to lack of interest and support, if you're interested in revitalizing this demo please submit a PR. A previous update attempt can be found [here](https://github.com/open-quantum-safe/oqs-demos/pull/298/commits/9a9696f04fc9e859c9df605dd088b82b62307a96)
+> This integration is longer supported due to lack of interest and support, if you're interested in revitalizing this demo please submit a PR. A previous update attempt can be found [here](https://github.com/open-quantum-safe/oqs-demos/commit/da3d03042a0b39caf500f0ce3744145e66b09f70)
 
 This directory contains a Dockerfile that builds the GNOME web browser epiphany such as to run TLS 1.3 using OQS-OpenSSL.
 
