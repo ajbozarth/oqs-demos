@@ -65,6 +65,10 @@ jobs:
           LOGGER_LEVEL=DEBUG HOST=https://localhost:4433 GROUP=kyber768 docker compose up -d --scale worker=1
         # Launch the Locust environment with a single worker for this test case.
 
+      - name: Wait for master to start
+        run: sleep 15
+        # Allow the test to complete by waiting longer than the specified run-time.
+
       - name: Start OpenSSL server
         working-directory: ./locust
         run: |
@@ -75,6 +79,10 @@ jobs:
             -tls1_3 \
             -groups kyber768
         # Start the OpenSSL quantum-safe server inside the Locust worker container.
+
+      - name: Wait for worker to start
+        run: sleep 20
+        # Allow the test to complete by waiting longer than the specified run-time.
 
       - name: Run Locust load test
         working-directory: ./locust
