@@ -55,7 +55,9 @@ jobs:
           build-args: |
             MAKE_DEFINES=-j4
             ${{ (github.event.inputs.build_main == 'true') && env.build-args || null }}
-          tags: oqs-locust
+          tags: |
+            oqs-locust
+            oqs-locust:0.0.1
 
       - name: Launch Locust in Docker Compose
         working-directory: ./locust
