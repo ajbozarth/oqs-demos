@@ -81,7 +81,7 @@ jobs:
         run: |
           curl -X POST -H "Content-Type: application/json" \
             -d '{"user_count": 10, "spawn_rate": 2, "run_time": "1m", "host": "https://localhost:4433"}' \
-            http://localhost:8089/swarm
+            http://localhost:8189/swarm
         # Trigger the Locust load test by sending a POST request to the Locust master API.
 
       - name: Wait for test to finish
