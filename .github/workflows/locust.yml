@@ -58,11 +58,13 @@ jobs:
           tags: oqs-locust
 
       - name: Launch Locust in Docker Compose
+        working-directory: ./locust
         run: |
           LOGGER_LEVEL=DEBUG HOST=https://localhost:4433 GROUP=kyber768 docker compose up -d --scale worker=1
         # Launch the Locust environment with a single worker for this test case.
 
       - name: Start OpenSSL server
+        working-directory: ./locust
         run: |
           docker exec -d locust-worker-1 openssl s_server \
             -cert bin/CA.crt \
@@ -73,6 +75,7 @@ jobs:
         # Start the OpenSSL quantum-safe server inside the Locust worker container.
 
       - name: Run Locust load test
+        working-directory: ./locust
         run: |
           curl -X POST -H "Content-Type: application/json" \
             -d '{"user_count": 10, "spawn_rate": 2, "run_time": "1m", "host": "https://localhost:4433"}' \
@@ -84,6 +87,7 @@ jobs:
         # Allow the test to complete by waiting longer than the specified run-time.
 
       - name: Download JSON report
+        working-directory: ./locust
         run: |
           curl 'http://localhost:8189/stats/requests/csv'  -o locust_report.out
         # Fetch the Locust test results in CSV format using the /stats/requests API.
@@ -92,9 +96,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: locust-report
-          path: locust_report.out
+          path: locust/locust_report.out
         # Save the JSON report as an artifact so it can be downloaded after the workflow completes.
 
       - name: Tear down Docker Compose
+        working-directory: ./locust
         run: docker compose down
         # Stop and remove all Locust-related containers to clean up the environment.
