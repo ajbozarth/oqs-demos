@@ -79,8 +79,8 @@ jobs:
       - name: Run Locust load test
         working-directory: ./locust
         run: |
-          curl -X POST -H "Content-Type: application/json" \
-            -d '{"user_count": 10, "spawn_rate": 2, "run_time": "1m", "host": "https://localhost:4433"}' \
+          curl -X POST -H 'content-type: application/x-www-form-urlencoded' \
+            --data-raw 'user_count=1&spawn_rate=1&host=https%3A%2F%2Flocalhost%3A4433&run_time=30s' \
             http://localhost:8189/swarm
         # Trigger the Locust load test by sending a POST request to the Locust master API.
 
@@ -88,10 +88,11 @@ jobs:
         run: sleep 70
         # Allow the test to complete by waiting longer than the specified run-time.
 
-      - name: Download JSON report
+      - name: Download and Check JSON report
         working-directory: ./locust
         run: |
-          curl 'http://localhost:8189/stats/requests/csv'  -o locust_report.out
+          curl 'http://localhost:8189/stats/requests/csv'  -o results.out &&
+          cat results.out | grep kyber768
         # Fetch the Locust test results in CSV format using the /stats/requests API.
 
       - name: Upload JSON report
