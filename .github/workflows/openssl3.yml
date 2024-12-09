@@ -2,7 +2,7 @@ name: openssl3
 
 on:
   push:
-    branches: [ 'main' ]
+    branches: [ '*' ]
     paths: ['.github/workflows/openssl3.yml', 'openssl3/**']
   pull_request:
     branches: [ 'main' ]
@@ -42,8 +42,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - arch: arm64
-            runner: oqs-arm64
+          # - arch: arm64
+          #   runner: oqs-arm64
           - arch: x86_64
             runner: ubuntu-latest
     runs-on: ${{ matrix.runner }}
@@ -89,11 +89,11 @@ jobs:
             openquantumsafe/openssl3:${{ inputs.release_tag || 'latest' }}-${{ matrix.arch }}
 
   push:
+    if: ${{ github.repository == 'open-quantum-safe/oqs-demos' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: ./.github/workflows/manifest
-        if: env.push == 'true'
         with:
           image_name: openssl3
           release_tag: ${{ inputs.release_tag || 'latest' }}
