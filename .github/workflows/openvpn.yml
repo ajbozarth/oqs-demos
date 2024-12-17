@@ -2,7 +2,7 @@ name: openvpn
 
 on:
   push:
-    branches: [ 'main' ]
+    branches: [ '*' ]
     paths: ['.github/workflows/openvpn.yml', 'openvpn/**']
   pull_request:
     branches: [ 'main' ]
@@ -43,9 +43,9 @@ jobs:
       matrix:
         include:
           - arch: x86_64
-            runner: ubuntu-latest
-          - arch: arm64
-            runner: oqs-arm64
+            runner: ubuntu-22.04
+          # - arch: arm64
+          #   runner: oqs-arm64
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
